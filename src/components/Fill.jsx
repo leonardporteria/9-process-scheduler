@@ -1,7 +1,12 @@
 import Forms from './utils/Forms';
 import { useCallback } from 'react';
 
-const Fill = ({ numberOfJobs }) => {
+const Fill = ({
+  numberOfJobs,
+  setIsInputVisible,
+  setIsFormsVisible,
+  setProcessData,
+}) => {
   const temporaryJobList = Array(parseInt(numberOfJobs)).fill(0);
 
   let jobNames = Array(parseInt(numberOfJobs));
@@ -22,8 +27,15 @@ const Fill = ({ numberOfJobs }) => {
     priorityLevels[index] = value;
   });
 
+  const onBackBtnClick = () => {
+    setIsInputVisible(true);
+    setIsFormsVisible(false);
+  };
+
   const onSubmitBtnClick = () => {
     console.log({ jobNames, arrivalTimes, busrtTimes, priorityLevels });
+    const processData = ['asd'];
+    setProcessData(processData);
   };
 
   return (
@@ -31,31 +43,41 @@ const Fill = ({ numberOfJobs }) => {
       <h1 className='text-blue-50 font-poppins font-semibold text-xl'>
         Enter Fields
       </h1>
-      {temporaryJobList.map((e, index) => (
-        <Forms
-          key={index}
-          index={index}
-          handleJobNames={(value, index) => {
-            handleJobNames(value, index);
-          }}
-          handleArrivalTime={(value, index) => {
-            handleArrivalTime(value, index);
-          }}
-          handleBurstTime={(value, index) => {
-            handleBurstTime(value, index);
-          }}
-          handlePriorityLevel={(value, index) => {
-            handlePriorityLevel(value, index);
-          }}
-        />
-      ))}
+      <div className='flex flex-col gap-4'>
+        {temporaryJobList.map((e, index) => (
+          <Forms
+            key={index}
+            index={index}
+            handleJobNames={(value, index) => {
+              handleJobNames(value, index);
+            }}
+            handleArrivalTime={(value, index) => {
+              handleArrivalTime(value, index);
+            }}
+            handleBurstTime={(value, index) => {
+              handleBurstTime(value, index);
+            }}
+            handlePriorityLevel={(value, index) => {
+              handlePriorityLevel(value, index);
+            }}
+          />
+        ))}
+      </div>
 
-      <button
-        className='w-48 h-12 rounded-lg bg-green-700 font-poppins text-sm'
-        onClick={onSubmitBtnClick}
-      >
-        Solve
-      </button>
+      <div className='flex gap-4'>
+        <button
+          className='w-48 h-12 rounded-lg bg-amber-700 font-poppins text-sm shadow-xl'
+          onClick={onBackBtnClick}
+        >
+          Back
+        </button>
+        <button
+          className='w-48 h-12 rounded-lg bg-green-700 font-poppins text-sm shadow-xl'
+          onClick={onSubmitBtnClick}
+        >
+          Solve
+        </button>
+      </div>
     </div>
   );
 };

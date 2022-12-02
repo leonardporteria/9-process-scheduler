@@ -5,8 +5,14 @@ const Forms = ({
   handleBurstTime,
   handlePriorityLevel,
 }) => {
+  const isDarker = index % 2 === 0;
+
   return (
-    <div className='flex items-center justify-around gap-4 w-full p-2'>
+    <div
+      className={`flex items-center justify-around gap-4 w-full p-4 rounded-lg shadow-xl ${
+        isDarker ? 'bg-dark-grid' : 'bg-light-grid'
+      } `}
+    >
       <h1 className='flex items-center justify-center w-24 rounded bg-emerald-700 font-poppins text-base'>
         Job: {`${++index}`}
       </h1>

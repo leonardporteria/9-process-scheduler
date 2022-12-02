@@ -5,6 +5,8 @@ import Fill from './components/Fill';
 import { useState } from 'react';
 
 function App() {
+  const [processData, setProcessData] = useState([]);
+
   // conditional rendering variables
   const [isInputVisible, setIsInputVisible] = useState(true);
   const [isFormsVisible, setIsFormsVisible] = useState(false);
@@ -22,8 +24,16 @@ function App() {
           setNumberOfJobs={setNumberOfJobs}
         />
       )}
-      {isFormsVisible && <Fill numberOfJobs={numberOfJobs} />}
+      {isFormsVisible && (
+        <Fill
+          numberOfJobs={numberOfJobs}
+          setIsInputVisible={setIsInputVisible}
+          setIsFormsVisible={setIsFormsVisible}
+          setProcessData={setProcessData}
+        />
+      )}
       {isOutputVisible}
+      {processData}
     </div>
   );
 }
