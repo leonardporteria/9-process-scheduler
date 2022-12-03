@@ -14,7 +14,7 @@ const Forms = ({
       } `}
     >
       <h1 className='flex items-center justify-center w-24 rounded bg-emerald-700 font-poppins text-base'>
-        Job: {`${++index}`}
+        Job: {`${index + 1}`}
       </h1>
       {/*Job Name Input*/}
       <div className='flex gap-4'>

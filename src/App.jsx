@@ -1,8 +1,9 @@
 import Header from './components/Header';
 import Input from './components/Input';
 import Fill from './components/Fill';
+import Output from './components/Output';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 function App() {
   const [processData, setProcessData] = useState([]);
@@ -13,6 +14,10 @@ function App() {
   const [isOutputVisible, setIsOutputVisible] = useState(false);
 
   const [numberOfJobs, setNumberOfJobs] = useState(0);
+
+  const handleOnSolveClick = useCallback((value) => {
+    setProcessData(value);
+  });
 
   return (
     <div className='min-h-screen min-w-full bg-slate-800 '>
@@ -29,11 +34,11 @@ function App() {
           numberOfJobs={numberOfJobs}
           setIsInputVisible={setIsInputVisible}
           setIsFormsVisible={setIsFormsVisible}
-          setProcessData={setProcessData}
+          setIsOutputVisible={setIsOutputVisible}
+          handleOnSolveClick={handleOnSolveClick}
         />
       )}
-      {isOutputVisible}
-      {processData}
+      {isOutputVisible && <Output processData={processData} />}
     </div>
   );
 }

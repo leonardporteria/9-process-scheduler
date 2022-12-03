@@ -5,7 +5,8 @@ const Fill = ({
   numberOfJobs,
   setIsInputVisible,
   setIsFormsVisible,
-  setProcessData,
+  setIsOutputVisible,
+  handleOnSolveClick,
 }) => {
   const temporaryJobList = Array(parseInt(numberOfJobs)).fill(0);
 
@@ -33,9 +34,19 @@ const Fill = ({
   };
 
   const onSubmitBtnClick = () => {
-    console.log({ jobNames, arrivalTimes, busrtTimes, priorityLevels });
-    const processData = ['asd'];
-    setProcessData(processData);
+    let processDetails = temporaryJobList.map((id, index) => {
+      return {
+        id: index,
+        job_name: jobNames[index],
+        arrival_time: arrivalTimes[index],
+        burst_time: busrtTimes[index],
+        priority_level: priorityLevels[index],
+      };
+    });
+    handleOnSolveClick(processDetails);
+
+    setIsFormsVisible(false);
+    setIsOutputVisible(true);
   };
 
   return (
