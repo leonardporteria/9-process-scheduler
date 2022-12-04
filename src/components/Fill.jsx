@@ -28,12 +28,19 @@ const Fill = ({
     priorityLevels[index] = value;
   });
 
+  const hasDuplicateJobNames = (array) => {
+    return new Set(array).size !== array.length;
+  };
+
   const onBackBtnClick = () => {
     setIsInputVisible(true);
     setIsFormsVisible(false);
   };
 
-  const onSubmitBtnClick = () => {
+  const onSolveBtnClick = () => {
+    // check if there's duplicate jobNames
+    if (hasDuplicateJobNames(jobNames)) return;
+
     let processDetails = temporaryJobList.map((id, index) => {
       return {
         id: index,
@@ -84,7 +91,7 @@ const Fill = ({
         </button>
         <button
           className='w-48 h-12 rounded-lg bg-green-700 font-poppins text-sm shadow-xl'
-          onClick={onSubmitBtnClick}
+          onClick={onSolveBtnClick}
         >
           Solve
         </button>

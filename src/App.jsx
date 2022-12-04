@@ -20,7 +20,7 @@ function App() {
   });
 
   return (
-    <div className='min-h-screen min-w-full bg-slate-800 '>
+    <div className='min-h-screen min-w-full bg-gray-900 '>
       <Header />
       {isInputVisible && (
         <Input

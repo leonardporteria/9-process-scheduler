@@ -4,8 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'dark-grid': '#0f172a',
-        'light-grid': '#131d34',
+        'dark-grid': '#151f37',
+        'light-grid': '#192643',
       },
     },
     fontFamily: {
