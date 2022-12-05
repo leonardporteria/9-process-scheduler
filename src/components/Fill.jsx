@@ -1,5 +1,6 @@
 import Forms from './utils/Forms';
-import { useCallback } from 'react';
+import Warning from './utils/Warning';
+import { useCallback, useState } from 'react';
 
 const Fill = ({
   numberOfJobs,
@@ -8,6 +9,9 @@ const Fill = ({
   setIsOutputVisible,
   handleOnSolveClick,
 }) => {
+  const [showWarning, setShowWarning] = useState(false);
+  const [hasDuplicateJobNames, setHasDuplicateJobNames] = useState(false);
+
   const temporaryJobList = Array(parseInt(numberOfJobs)).fill(0);
 
   let jobNames = Array(parseInt(numberOfJobs));
@@ -28,7 +32,7 @@ const Fill = ({
     priorityLevels[index] = value;
   });
 
-  const hasDuplicateJobNames = (array) => {
+  const handleHasDuplicateJobNames = (array) => {
     return new Set(array).size !== array.length;
   };
 
@@ -38,8 +42,22 @@ const Fill = ({
   };
 
   const onSolveBtnClick = () => {
+    // check if all fields have value
+    for (let i = 0; i < temporaryJobList.length; i++) {
+      if (
+        jobNames[i] === undefined ||
+        jobNames[i].trim() === '' ||
+        arrivalTimes[i] === undefined ||
+        busrtTimes[i] === undefined ||
+        priorityLevels[i] === undefined
+      ) {
+        setShowWarning(true);
+        return;
+      }
+    }
+
     // check if there's duplicate jobNames
-    if (hasDuplicateJobNames(jobNames)) return;
+    if (handleHasDuplicateJobNames(jobNames)) return;
 
     let processDetails = temporaryJobList.map((id, index) => {
       return {
@@ -51,6 +69,8 @@ const Fill = ({
       };
     });
     handleOnSolveClick(processDetails);
+
+    console.log(processDetails);
 
     setIsFormsVisible(false);
     setIsOutputVisible(true);
@@ -96,6 +116,14 @@ const Fill = ({
           Solve
         </button>
       </div>
+      {showWarning && (
+        <Warning
+          type='invalid-input'
+          setShowWarning={setShowWarning}
+          warningTitle='Invalid Input'
+          warningContent='All Fields Are Required'
+        />
+      )}
     </div>
   );
 };

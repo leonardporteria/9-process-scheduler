@@ -1,19 +1,32 @@
+import Warning from './utils/Warning';
+
 import { useState } from 'react';
 
 const Input = ({ setIsInputVisible, setIsFormsVisible, setNumberOfJobs }) => {
-  const [canProceed, setCanProceed] = useState(true);
   const [localNumberOfJobs, setLocalNumberOfJobs] = useState(0);
+
+  const [canProceed, setCanProceed] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
 
   const handleJobsChange = (e) => {
     setLocalNumberOfJobs(e.target.value);
     setNumberOfJobs(e.target.value);
 
-    if (e.target.value === '') setCanProceed(true);
-    else if (e.target.value < 1) setCanProceed(true);
-    else setCanProceed(false);
+    if (e.target.value > 100) setShowWarning(true);
+
+    if (e.target.value === '') setCanProceed(false);
+    else if (e.target.value < 1) setCanProceed(false);
+    else setCanProceed(true);
   };
 
-  const handleJobsClick = () => {
+  const handleJobsClick = (override = true) => {
+    if (override) {
+      if (localNumberOfJobs > 100) {
+        setShowWarning(true);
+        return;
+      }
+    }
+
     setIsInputVisible(false);
     setIsFormsVisible(true);
   };
@@ -31,15 +44,21 @@ const Input = ({ setIsInputVisible, setIsFormsVisible, setNumberOfJobs }) => {
       />
       <button
         className={`w-48 h-12 rounded-lg shadow-xl ${
-          canProceed ? 'bg-amber-700 cursor-not-allowed' : 'bg-green-700'
+          canProceed ? 'bg-green-700' : 'bg-amber-700 cursor-not-allowed'
         } `}
-        disabled={canProceed}
+        disabled={!canProceed}
         onClick={handleJobsClick}
       >
         Submit
       </button>
-      {localNumberOfJobs > 100 && (
-        <p>You are about to input {localNumberOfJobs} jobs, Are you sure?</p>
+      {showWarning && (
+        <Warning
+          type='input-warning'
+          setShowWarning={setShowWarning}
+          handleJobsClick={handleJobsClick}
+          warningTitle='Warning'
+          warningContent={`You are about to enter ${localNumberOfJobs} jobs, are you sure?`}
+        />
       )}
     </div>
   );
