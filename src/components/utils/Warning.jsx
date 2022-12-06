@@ -14,10 +14,10 @@ const Warning = ({
           <button
             className=''
             onClick={
-              type === ' input-warning'
+              type === 'input-warning'
                 ? () => {
                     setShowWarning(false);
-                    handleJobsClick(false);
+                    handleJobsClick(true);
                   }
                 : () => {
                     setShowWarning(false);
@@ -26,13 +26,15 @@ const Warning = ({
           >
             ok
           </button>
-          <button
-            onClick={() => {
-              setShowWarning(false);
-            }}
-          >
-            cancel
-          </button>
+          {type === 'input-warning' ? (
+            <button
+              onClick={() => {
+                setShowWarning(false);
+              }}
+            >
+              cancel
+            </button>
+          ) : null}
         </div>
       </div>
     </section>

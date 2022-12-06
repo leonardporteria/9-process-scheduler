@@ -19,8 +19,8 @@ const Input = ({ setIsInputVisible, setIsFormsVisible, setNumberOfJobs }) => {
     else setCanProceed(true);
   };
 
-  const handleJobsClick = (override = true) => {
-    if (override) {
+  const handleJobsClick = (override = false) => {
+    if (!override) {
       if (localNumberOfJobs > 100) {
         setShowWarning(true);
         return;

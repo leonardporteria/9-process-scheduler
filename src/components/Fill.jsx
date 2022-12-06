@@ -12,25 +12,26 @@ const Fill = ({
   const [showWarning, setShowWarning] = useState(false);
   const [hasDuplicateJobNames, setHasDuplicateJobNames] = useState(false);
 
-  const temporaryJobList = Array(parseInt(numberOfJobs)).fill(0);
+  const jobs = parseInt(numberOfJobs);
+  const temporaryJobList = Array(jobs).fill(0);
 
-  let jobNames = Array(parseInt(numberOfJobs));
-  let arrivalTimes = Array(parseInt(numberOfJobs));
-  let busrtTimes = Array(parseInt(numberOfJobs));
-  let priorityLevels = Array(parseInt(numberOfJobs));
+  const [jobNames, setJobNames] = useState(Array(jobs));
+  const [arrivalTimes, setArrivalTimes] = useState(Array(jobs));
+  const [busrtTimes, setBurstTimes] = useState(Array(jobs));
+  const [priorityLevels, setPriorityLevels] = useState(Array(jobs));
 
-  const handleJobNames = useCallback((value, index) => {
-    jobNames[index] = value;
-  });
-  const handleArrivalTime = useCallback((value, index) => {
-    arrivalTimes[index] = value;
-  });
-  const handleBurstTime = useCallback((value, index) => {
-    busrtTimes[index] = value;
-  });
-  const handlePriorityLevel = useCallback((value, index) => {
-    priorityLevels[index] = value;
-  });
+  const handleJobNames = useCallback(
+    (value, index) => (jobNames[index] = value)
+  );
+  const handleArrivalTime = useCallback(
+    (value, index) => (arrivalTimes[index] = value)
+  );
+  const handleBurstTime = useCallback(
+    (value, index) => (busrtTimes[index] = value)
+  );
+  const handlePriorityLevel = useCallback(
+    (value, index) => (priorityLevels[index] = value)
+  );
 
   const handleHasDuplicateJobNames = (array) => {
     return new Set(array).size !== array.length;
@@ -53,12 +54,16 @@ const Fill = ({
       ) {
         setShowWarning(true);
         return;
-      }
+      } else setShowWarning(false);
     }
 
     // check if there's duplicate jobNames
-    if (handleHasDuplicateJobNames(jobNames)) return;
+    if (handleHasDuplicateJobNames(jobNames)) {
+      setHasDuplicateJobNames(true);
+      return;
+    }
 
+    // processed details for App.js main state
     let processDetails = temporaryJobList.map((id, index) => {
       return {
         id: index,
@@ -69,8 +74,6 @@ const Fill = ({
       };
     });
     handleOnSolveClick(processDetails);
-
-    console.log(processDetails);
 
     setIsFormsVisible(false);
     setIsOutputVisible(true);
@@ -122,6 +125,14 @@ const Fill = ({
           setShowWarning={setShowWarning}
           warningTitle='Invalid Input'
           warningContent='All Fields Are Required'
+        />
+      )}
+      {hasDuplicateJobNames && (
+        <Warning
+          type='invalid-input'
+          setShowWarning={setHasDuplicateJobNames}
+          warningTitle='Duplicate Job Name'
+          warningContent='Duplicate Job Name Found'
         />
       )}
     </div>
