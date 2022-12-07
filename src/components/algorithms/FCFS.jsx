@@ -41,7 +41,7 @@ const FCFS = ({ processData }) => {
       temporaryFCFSData.push(FCFS_object);
     });
 
-    console.log(temporaryFCFSData);
+    console.table(temporaryFCFSData);
 
     setFCFS_data(temporaryFCFSData);
   };
@@ -75,7 +75,7 @@ const FCFS = ({ processData }) => {
                   key={index}
                   className='text-right border-r-2 border-t-2 p-2'
                 >
-                  {data.end_time || data}
+                  {data.end_time}
                 </td>
               ))}
             </tr>
@@ -114,10 +114,12 @@ const FCFS = ({ processData }) => {
                       {data.end_time || data}
                     </td>
                     <td className='text-center border-2 p-4'>
-                      {data.end_time - data.arrival_time}
+                      {data.end_time - parseInt(data.arrival_time)}
                     </td>
                     <td className='text-center border-2 p-4'>
-                      {data.end_time - data.arrival_time - data.burst_time}
+                      {data.end_time -
+                        parseInt(data.arrival_time) -
+                        parseInt(data.burst_time)}
                     </td>
                   </tr>
                 );
