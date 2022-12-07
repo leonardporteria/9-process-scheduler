@@ -1,21 +1,31 @@
 import { useEffect, useState } from 'react';
 
 const FCFS = ({ processData }) => {
+  const [FCFS_data, setFCFS_data] = useState([]);
+
   const timelineData = processData.sort((a, b) =>
     parseInt(a.arrival_time) > parseInt(b.arrival_time) ? 1 : -1
   );
-
-  const [FCFS_data, setFCFS_data] = useState([]);
+  const FCFS_gantt = [
+    ...FCFS_data.sort((a, b) => (a.end_time > b.end_time ? 1 : -1)),
+  ];
+  const FCFS_output = [...FCFS_data.sort((a, b) => (a.id > b.id ? 1 : -1))];
 
   const handleFCFSData = () => {
-    const getEndTimes = [];
+    const temporaryFCFSData = [];
     let end_time;
-    console.log(timelineData);
 
     timelineData.forEach((data, index) => {
       if (index === 0) {
         end_time = parseInt(data.arrival_time);
-        getEndTimes.push(end_time);
+        temporaryFCFSData.push({
+          id: -1,
+          job_name: '',
+          arrival_time: '',
+          burst_time: '',
+          priority_level: '',
+          end_time: end_time,
+        });
       }
       end_time += parseInt(data.burst_time);
 
@@ -28,11 +38,12 @@ const FCFS = ({ processData }) => {
         end_time: end_time,
       };
 
-      getEndTimes.push(FCFS_object);
-      console.log(getEndTimes);
+      temporaryFCFSData.push(FCFS_object);
     });
 
-    setFCFS_data(getEndTimes);
+    console.log(temporaryFCFSData);
+
+    setFCFS_data(temporaryFCFSData);
   };
 
   useEffect(() => {
@@ -59,7 +70,7 @@ const FCFS = ({ processData }) => {
           </thead>
           <tbody>
             <tr>
-              {FCFS_data.map((data, index) => (
+              {FCFS_gantt.map((data, index) => (
                 <td
                   key={index}
                   className='text-right border-r-2 border-t-2 p-2'
@@ -72,7 +83,7 @@ const FCFS = ({ processData }) => {
         </table>
       </div>
 
-      {/* TURNAROUND TIME */}
+      {/* TURNAROUND AND WAITING TIME */}
       <div className='flex flex-col mt-2'>
         <table className='border-2 border-solid border-slate-200'>
           <thead>
@@ -86,7 +97,7 @@ const FCFS = ({ processData }) => {
             </tr>
           </thead>
           <tbody>
-            {FCFS_data.map((data, index) => {
+            {FCFS_output.map((data, index) => {
               if (index !== 0) {
                 return (
                   <tr key={index}>
@@ -115,8 +126,6 @@ const FCFS = ({ processData }) => {
           </tbody>
         </table>
       </div>
-
-      {/* WAITING TIME */}
     </section>
   );
 };

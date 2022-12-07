@@ -1,10 +1,13 @@
 import Timeline from './utils/Timeline';
 import FCFS from './algorithms/FCFS';
+import SJF from './algorithms/SJF';
 
 import { useState, useEffect } from 'react';
 
 const Output = ({ processData }) => {
   const [totalBurstTime, setTotalBurstTime] = useState(0);
+
+  const inputData = processData.sort((a, b) => (a.id > b.id ? 1 : -1));
 
   const handleTotalBurstTime = () => {
     let total_burst_time = 0;
@@ -30,7 +33,7 @@ const Output = ({ processData }) => {
           </tr>
         </thead>
         <tbody>
-          {processData.map((data) => (
+          {inputData.map((data) => (
             <tr key={data.id} className='border-2 border-slate-200 text-center'>
               <td className='border-2 border-slate-200 p-4'>{data.job_name}</td>
               <td className='border-2 border-slate-200 p-4'>
@@ -47,8 +50,11 @@ const Output = ({ processData }) => {
         </tbody>
         <tfoot>
           <tr>
-            <th className='border-2 border-slate-200 p-4' colSpan='2'>
-              Job Name
+            <th
+              className='border-2 border-slate-200 p-4 text-right'
+              colSpan='2'
+            >
+              Total Burst Time:
             </th>
             <th className='border-2 border-slate-200 p-4'>{totalBurstTime}</th>
             <th className='border-2 border-slate-200 p-4'></th>
@@ -59,6 +65,7 @@ const Output = ({ processData }) => {
       {/* ALGORITHM TABLES */}
       <Timeline processData={processData} />
       <FCFS processData={processData} />
+      <SJF processData={processData} />
     </section>
   );
 };
