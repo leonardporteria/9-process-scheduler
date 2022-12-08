@@ -41,8 +41,6 @@ const FCFS = ({ processData }) => {
       temporaryFCFSData.push(FCFS_object);
     });
 
-    console.table(temporaryFCFSData);
-
     setFCFS_data(temporaryFCFSData);
   };
 
