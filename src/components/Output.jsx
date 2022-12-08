@@ -1,6 +1,7 @@
 import Timeline from './utils/Timeline';
 import FCFS from './algorithms/FCFS';
 import SJF from './algorithms/SJF';
+import NPP from './algorithms/NPP';
 
 import { useState, useEffect } from 'react';
 
@@ -66,6 +67,7 @@ const Output = ({ processData }) => {
       <Timeline processData={processData} />
       <FCFS processData={processData} />
       <SJF processData={processData} />
+      <NPP processData={processData} />
     </section>
   );
 };
