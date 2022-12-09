@@ -11,6 +11,9 @@ const NPP = ({ processData }) => {
   ];
   const NPP_output = [...NPP_data.sort((a, b) => (a.id > b.id ? 1 : -1))];
 
+  const [NPP_averageTurnAroundTime, setNPP_averageTurnAroundTime] = useState(0);
+  const [NPP_averageWaitingTime, setNPP_averageWaitingTime] = useState(0);
+
   const handleNPPData = () => {
     // filter all array that's within the end time
     // push to tempNPPData the used object
@@ -41,6 +44,28 @@ const NPP = ({ processData }) => {
       temporaryNPPData.push({ ...highestPriority, end_time: end_time });
     });
     setNPP_data(temporaryNPPData);
+
+    // Compute the average turnaround time and waiting time
+    // TT = et - at
+    // WT = tt- bt
+    let tempTurnAroundTime = 0;
+    let tempWaitingTime = 0;
+
+    // total all tt and wt
+    temporaryNPPData.forEach((data) => {
+      tempTurnAroundTime +=
+        parseInt(data.end_time) - parseInt(data.arrival_time);
+      tempWaitingTime += tempTurnAroundTime - parseInt(data.burst_time);
+    });
+
+    // get the average
+    tempTurnAroundTime = (tempTurnAroundTime / temporaryNPPData.length).toFixed(
+      2
+    );
+    tempWaitingTime = (tempWaitingTime / temporaryNPPData.length).toFixed(2);
+
+    setNPP_averageTurnAroundTime(tempTurnAroundTime);
+    setNPP_averageWaitingTime(tempWaitingTime);
   };
 
   useEffect(() => {
@@ -118,6 +143,22 @@ const NPP = ({ processData }) => {
               </tr>
             ))}
           </tbody>
+          <tfoot>
+            <tr>
+              <td
+                colSpan='4'
+                className='border-2 border-slate-200 p-4 text-right font-semibold'
+              >
+                Average Turn Around Time and Waiting Time
+              </td>
+              <td className='border-2 border-slate-200 p-4 text-center font-semibold'>
+                {NPP_averageTurnAroundTime}
+              </td>
+              <td className='border-2 border-slate-200 p-4 text-center font-semibold'>
+                {NPP_averageWaitingTime}
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </div>
     </section>

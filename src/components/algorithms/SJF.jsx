@@ -11,6 +11,9 @@ const SJF = ({ processData }) => {
   ];
   const SJF_output = [...SJF_data.sort((a, b) => (a.id > b.id ? 1 : -1))];
 
+  const [SJF_averageTurnAroundTime, setSJF_averageTurnAroundTime] = useState(0);
+  const [SJF_averageWaitingTime, setSJF_averageWaitingTime] = useState(0);
+
   const handleSJFData = () => {
     // filter all array that's within the end time
     // push to tempSJFData the used object
@@ -41,6 +44,28 @@ const SJF = ({ processData }) => {
       temporarySJFData.push({ ...smallestBurstTime, end_time: end_time });
     });
     setSJF_data(temporarySJFData);
+
+    // Compute the average turnaround time and waiting time
+    // TT = et - at
+    // WT = tt- bt
+    let tempTurnAroundTime = 0;
+    let tempWaitingTime = 0;
+
+    // total all tt and wt
+    temporarySJFData.forEach((data) => {
+      tempTurnAroundTime +=
+        parseInt(data.end_time) - parseInt(data.arrival_time);
+      tempWaitingTime += tempTurnAroundTime - parseInt(data.burst_time);
+    });
+
+    // get the average
+    tempTurnAroundTime = (tempTurnAroundTime / temporarySJFData.length).toFixed(
+      2
+    );
+    tempWaitingTime = (tempWaitingTime / temporarySJFData.length).toFixed(2);
+
+    setSJF_averageTurnAroundTime(tempTurnAroundTime);
+    setSJF_averageWaitingTime(tempWaitingTime);
   };
 
   useEffect(() => {
@@ -118,6 +143,22 @@ const SJF = ({ processData }) => {
               </tr>
             ))}
           </tbody>
+          <tfoot>
+            <tr>
+              <td
+                colSpan='4'
+                className='border-2 border-slate-200 p-4 text-right font-semibold'
+              >
+                Average Turn Around Time and Waiting Time
+              </td>
+              <td className='border-2 border-slate-200 p-4 text-center font-semibold'>
+                {SJF_averageTurnAroundTime}
+              </td>
+              <td className='border-2 border-slate-200 p-4 text-center font-semibold'>
+                {SJF_averageWaitingTime}
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </div>
     </section>
